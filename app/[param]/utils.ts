@@ -1,0 +1,2 @@
+export const VARIABLES = ["llc-california", "llc-texas", "llc-florida", "llc-new-york", "scorp-california", "scorp-texas", "sole-prop-california"];
+export function generateStaticParams() { return VARIABLES.map(v => ({ param: v })); }
