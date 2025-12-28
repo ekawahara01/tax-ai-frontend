@@ -1,53 +1,74 @@
-import Calculator from '../components/Calculator';
-import Link from 'next/link';
-import { ShieldCheck, Cpu, Zap } from 'lucide-react';
+"use client";
 
-export default function Home() {
+import React, { useState } from 'react';
+
+export default function TaxCalculator() {
+  const [income, setIncome] = useState(1000);
+  const [taxRate, setTaxRate] = useState(5);
+
+  const selfEmploymentTax = income * 0.153;
+  const stateTax = income * (taxRate / 100);
+  const deduction = 100; // 簡易控除
+  const netTakeHome = income - selfEmploymentTax - stateTax + deduction;
+
   return (
-    <div>
-      <section className="bg-white border-b border-slate-100 py-20">
-        <div className="container mx-auto px-6 max-w-5xl text-center">
-          <div className="inline-flex items-center space-x-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold mb-6">
-            <Zap size={12} />
-            <span>ENTERPRISE GRADE PRECISION</span>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-outfit font-black text-brand-navy mb-6 tracking-tight">
-            Professional 1099 Tax AI <br/><span className="text-blue-600">Efficiency Engine.</span>
-          </h1>
-          <p className="text-xl text-slate-500 max-w-2xl mx-auto mb-10">
-            Calculate your Finance metrics with 99.9% accuracy using our validated logical templates. 
-          </p>
-          
-          <div className="relative max-w-3xl mx-auto">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-3xl blur opacity-20"></div>
-            <div className="relative bg-white p-2 rounded-3xl shadow-2xl border border-slate-100">
-               <Calculator />
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8">
+        <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold mb-1">Enterprise Grade Precision</div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">Professional 1099 Tax AI Engine</h1>
 
-      <section className="py-20 bg-slate-50">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-2xl border border-slate-200">
-               <ShieldCheck className="text-emerald-600 mb-4" size={32} />
-               <h3 className="font-bold text-lg mb-2">Verified Logic</h3>
-               <p className="text-slate-500 text-sm">Every calculation follows the latest industry standards for Finance.</p>
+        <div className="space-y-4 mb-8">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Annual Income ($)</label>
+            <input
+              type="number"
+              value={income}
+              onChange={(e) => setIncome(Number(e.target.value))}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Regional Factor (Tax %)</label>
+            <input
+              type="number"
+              value={taxRate}
+              onChange={(e) => setTaxRate(Number(e.target.value))}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            />
+          </div>
+        </div>
+
+        <div className="bg-indigo-50 p-6 rounded-lg mb-8">
+          <div className="text-sm text-indigo-600 font-bold uppercase">Projected Net Take-Home</div>
+          <div className="text-4xl font-extrabold text-indigo-900">${netTakeHome.toLocaleString()}</div>
+
+          <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-gray-600">
+            <div>Self-Employment Tax: <span className="font-bold">${selfEmploymentTax.toLocaleString()}</span></div>
+            <div>State Tax Rate ({taxRate}%): <span className="font-bold">${stateTax.toLocaleString()}</span></div>
+          </div>
+        </div>
+
+        <button className="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-200 mb-8">
+          Get Your Full Tax Saving Plan →
+        </button>
+
+        <div className="border-t border-gray-200 pt-6 space-y-4">
+          <div className="flex items-start">
+            <div className="text-indigo-500 mr-3">🛡️</div>
+            <div>
+              <p className="font-bold text-gray-900">Verified Logic</p>
+              <p className="text-sm text-gray-500">Calculations follow 2026 industry standards.</p>
             </div>
-            <div className="bg-white p-8 rounded-2xl border border-slate-200">
-               <Cpu className="text-blue-600 mb-4" size={32} />
-               <h3 className="font-bold text-lg mb-2">Edge Computing</h3>
-               <p className="text-slate-500 text-sm">Real-time localized processing for over 7 regions.</p>
-            </div>
-            <div className="bg-white p-8 rounded-2xl border border-slate-200">
-               <Zap className="text-gold-600 mb-4" size={32} />
-               <h3 className="font-bold text-lg mb-2">Instant ROI</h3>
-               <p className="text-slate-500 text-sm">Built-in integration with <strong>Collective/TurboTax</strong> for immediate execution.</p>
+          </div>
+          <div className="flex items-start">
+            <div className="text-indigo-500 mr-3">⚡</div>
+            <div>
+              <p className="font-bold text-gray-900">Edge Computing</p>
+              <p className="text-sm text-gray-500">Real-time localized processing for over 50 states.</p>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
